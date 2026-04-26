@@ -1,0 +1,1 @@
+# Ted-Nite-Portfolio-Credentialing-Specialist
