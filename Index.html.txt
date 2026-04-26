@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ted Nite — Credentialing Solutions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,800;1,9..144,700;1,9..144,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+
+    :root{
+      --ink:      #080a0d;
+      --deep:     #0d1018;
+      --panel:    #121620;
+      --card:     #171c28;
+      --lift:     #1d2333;
+      --rim:      rgba(255,255,255,0.07);
+      --rim2:     rgba(255,255,255,0.12);
+      --copper:   #c87941;
+      --copper-lt:#e8954f;
+      --copper-dim:rgba(200,121,65,0.13);
+      --copper-glow:rgba(200,121,65,0.28);
+      --gold:     #d4a056;
+      --cream:    #f0e6d3;
+      --white:    #ffffff;
+      --text:     #b8c4d4;
+      --muted:    #4e5a6e;
+      --r:        14px;
+      --serif:    'Fraunces', Georgia, serif;
+      --sans:     'Plus Jakarta Sans', sans-serif;
+      --ease:     cubic-bezier(0.4,0,0.2,1);
+    }
+
+    body{font-family:var(--sans);background:var(--ink);color:var(--text);line-height:1.65;overflow-x:hidden}
+
+    /* Grain texture */
+    body::after{content:'';position:fixed;inset:0;z-index:999;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E");
+      opacity:0.5;mix-blend-mode:overlay}
+
+    ::-webkit-scrollbar{width:3px}
+    ::-webkit-scrollbar-track{background:var(--ink)}
+    ::-webkit-scrollbar-thumb{background:var(--copper);border-radius:2px}
+
+    /* ── NAV ── */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:500;
+      height:72px;display:flex;align-items:center;justify-content:space-between;
+      padding:0 5%;
+      background:rgba(8,10,13,0.85);
+      backdrop-filter:blur(28px) saturate(1.5);
+      border-bottom:1px solid var(--rim);
+    }
+    .nl{display:flex;flex-direction:column;gap:1px}
+    .nl-name{font-family:var(--serif);font-size:1.35rem;font-weight:800;color:var(--white);letter-spacing:-0.01em}
+    .nl-name em{font-style:italic;color:var(--copper-lt)}
+    .nl-sub{font-size:0.58rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
+    .nv{display:flex;align-items:center;gap:2rem;list-style:none}
+    .nv a{font-size:0.73rem;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s}
+    .nv a:hover{color:var(--cream)}
+    .nc{background:var(--copper)!important;color:#000!important;padding:0.5rem 1.2rem!important;border-radius:6px!important;font-weight:700!important;font-size:0.72rem!important;letter-spacing:0.09em!important;box-shadow:0 0 22px var(--copper-glow)!important;transition:background 0.2s,transform 0.18s,box-shadow 0.2s!important}
+    .nc:hover{background:var(--copper-lt)!important;transform:translateY(-1px);box-shadow:0 0 36px var(--copper-glow)!important}
+
+    .bg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:600}
+    .bg span{display:block;width:22px;height:1.5px;background:var(--cream);border-radius:1px;transition:0.28s}
+    .bg.o span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+    .bg.o span:nth-child(2){opacity:0}
+    .bg.o span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+    .mn{display:none;position:fixed;top:72px;left:0;right:0;z-index:499;background:rgba(8,10,13,0.98);backdrop-filter:blur(28px);flex-direction:column;padding:1rem 5% 2rem;border-bottom:1px solid var(--rim);animation:mslide 0.22s ease}
+    .mn.o{display:flex}
+    @keyframes mslide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+    .mn a{font-size:0.88rem;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:0.85rem 0;border-bottom:1px solid var(--rim);transition:color 0.2s}
+    .mn a:last-child{border:none;color:var(--copper-lt)}
+    .mn a:hover{color:var(--cream)}
+
+    /* ── HERO ── */
+    .hero{
+      min-height:100vh;
+      position:relative;overflow:hidden;
+      display:flex;align-items:center;
+      padding:9rem 5% 5rem;
+    }
+
+    /* Full bleed hero image */
+    .hero-img{
+      position:absolute;inset:0;
+      background:url('https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1800&q=85') center/cover no-repeat;
+      filter:brightness(0.22) saturate(0.5);
+    }
+    /* Gradient veil over image */
+    .hero-veil{
+      position:absolute;inset:0;
+      background:linear-gradient(105deg,rgba(8,10,13,0.97) 0%,rgba(8,10,13,0.75) 55%,rgba(8,10,13,0.3) 100%);
+    }
+    /* Copper glow orb */
+    .hero-orb{
+      position:absolute;top:-15%;right:5%;
+      width:650px;height:650px;border-radius:50%;
+      background:radial-gradient(circle,rgba(200,121,65,0.09) 0%,transparent 65%);
+      pointer-events:none;
+    }
+
+    .hero-inner{position:relative;z-index:2;max-width:760px;animation:fadeup 0.9s ease both}
+    @keyframes fadeup{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+    .h-ey{display:inline-flex;align-items:center;gap:10px;font-size:0.64rem;font-weight:700;letter-spacing:0.24em;text-transform:uppercase;color:var(--copper-lt);margin-bottom:2rem}
+    .h-ey::before{content:'';display:block;width:32px;height:1px;background:var(--copper);opacity:0.7}
+
+    .hero h1{
+      font-family:var(--serif);
+      font-size:clamp(3.2rem,6.5vw,6rem);
+      font-weight:800;color:var(--white);
+      line-height:1.03;letter-spacing:-0.03em;
+      margin-bottom:1.8rem;
+    }
+    .hero h1 em{font-style:italic;color:var(--copper-lt)}
+
+    .hero-desc{font-size:1.05rem;font-weight:300;color:var(--text);line-height:1.88;max-width:520px;margin-bottom:3rem}
+
+    .hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:4rem}
+    .cta-fill{background:var(--copper);color:#000;padding:0.95rem 2.2rem;border-radius:8px;font-size:0.82rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;box-shadow:0 0 36px var(--copper-glow);transition:background 0.2s,transform 0.2s,box-shadow 0.2s}
+    .cta-fill:hover{background:var(--copper-lt);transform:translateY(-2px);box-shadow:0 0 52px rgba(200,121,65,0.45)}
+    .cta-line{border:1px solid var(--rim2);color:var(--text);padding:0.95rem 2.2rem;border-radius:8px;font-size:0.82rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:border-color 0.2s,color 0.2s,transform 0.2s}
+    .cta-line:hover{border-color:var(--copper);color:var(--copper-lt);transform:translateY(-2px)}
+
+    /* Hero stat bar */
+    .hero-stats{
+      display:flex;gap:0;
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--rim);
+      border-radius:12px;overflow:hidden;
+      backdrop-filter:blur(12px);
+      max-width:600px;
+    }
+    .hs{flex:1;padding:1.4rem 1.2rem;text-align:center;border-right:1px solid var(--rim);transition:background 0.2s}
+    .hs:last-child{border-right:none}
+    .hs:hover{background:rgba(200,121,65,0.05)}
+    .hs-n{font-family:var(--serif);font-size:2.2rem;font-weight:800;color:var(--white);line-height:1;margin-bottom:0.25rem}
+    .hs-n sup{font-size:0.9rem;color:var(--copper)}
+    .hs-l{font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+
+    /* ── SECTION BASE ── */
+    section{padding:7rem 5%}
+    .ey{display:inline-flex;align-items:center;gap:10px;font-size:0.62rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--copper);margin-bottom:1rem}
+    .ey::before{content:'';display:block;width:18px;height:1.5px;background:var(--copper);flex-shrink:0}
+    h2.t{font-family:var(--serif);font-size:clamp(2.2rem,4vw,3.4rem);font-weight:800;color:var(--white);line-height:1.09;margin-bottom:1rem;letter-spacing:-0.025em}
+    h2.t em{font-style:italic;color:var(--copper-lt)}
+    .sb{font-size:0.97rem;color:var(--muted);max-width:540px;line-height:1.82}
+
+    /* ── ABOUT ── */
+    #about{background:var(--deep)}
+    .ab-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;border-radius:20px;overflow:hidden;border:1px solid var(--rim);box-shadow:0 40px 100px rgba(0,0,0,0.5)}
+
+    /* Left — image panel */
+    .ab-img-panel{
+      position:relative;min-height:600px;
+      background:url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=900&q=85') center/cover no-repeat;
+    }
+    .ab-img-panel::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(to right,rgba(13,16,24,0.1),rgba(13,16,24,0.65));
+    }
+    .ab-img-overlay{
+      position:absolute;bottom:0;left:0;right:0;
+      padding:2rem;
+      background:linear-gradient(to top,rgba(13,16,24,0.95),transparent);
+    }
+    .ab-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:var(--copper);border-radius:8px;padding:0.85rem 1.2rem;
+    }
+    .ab-badge b{font-family:var(--serif);font-size:1.8rem;font-weight:800;color:#000;line-height:1}
+    .ab-badge span{font-size:0.7rem;font-weight:700;color:rgba(0,0,0,0.7);text-transform:uppercase;letter-spacing:0.08em;line-height:1.3}
+
+    /* Right — text panel */
+    .ab-text-panel{background:var(--panel);padding:4rem 3.5rem;display:flex;flex-direction:column;justify-content:center}
+    .ab-text-panel p{font-size:0.98rem;color:var(--text);line-height:1.88;margin-bottom:1rem}
+    .ck-list{display:flex;flex-direction:column;gap:0.65rem;margin-top:1.8rem}
+    .ck{display:flex;align-items:flex-start;gap:0.75rem;font-size:0.9rem;color:var(--text)}
+    .ck-d{width:20px;height:20px;flex-shrink:0;margin-top:1px;border-radius:50%;border:1.5px solid var(--copper);background:var(--copper-dim);display:flex;align-items:center;justify-content:center;font-size:0.58rem;color:var(--copper)}
+
+    /* ── SPECIALTIES ── */
+    #specialties{background:var(--ink)}
+    .sp-hd{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;gap:2rem;flex-wrap:wrap}
+    .sp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1px;background:var(--rim);border:1px solid var(--rim);border-radius:var(--r);overflow:hidden}
+    .sp-card{background:var(--deep);padding:1.9rem;position:relative;overflow:hidden;transition:background 0.25s}
+    .sp-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--copper),var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform 0.35s var(--ease)}
+    .sp-card:hover{background:var(--panel)}
+    .sp-card:hover::after{transform:scaleX(1)}
+    .sp-ico{font-size:1.6rem;margin-bottom:1rem;display:block}
+    .sp-card h3{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:0.45rem}
+    .sp-card p{font-size:0.82rem;color:var(--muted);line-height:1.72}
+    .sp-pill{display:inline-block;margin-top:0.9rem;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--copper);background:var(--copper-dim);border-radius:3px;padding:0.18rem 0.6rem;border:1px solid rgba(200,121,65,0.2)}
+
+    /* ── PROJECTS ── */
+    #projects{background:var(--deep);position:relative;overflow:hidden}
+    #projects::before{content:'';position:absolute;right:-10%;top:50%;transform:translateY(-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,121,65,0.06) 0%,transparent 70%);pointer-events:none}
+
+    .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+
+    .proj-card{
+      background:var(--card);border:1px solid var(--rim);border-radius:16px;
+      overflow:hidden;position:relative;
+      transition:transform 0.3s var(--ease),border-color 0.3s,box-shadow 0.3s;
+    }
+    .proj-card:hover{transform:translateY(-6px);border-color:rgba(200,121,65,0.3);box-shadow:0 24px 60px rgba(0,0,0,0.4),0 0 0 1px rgba(200,121,65,0.12)}
+
+    /* Project card image */
+    .proj-img{
+      height:200px;position:relative;overflow:hidden;
+    }
+    .proj-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s var(--ease);filter:brightness(0.7) saturate(0.75)}
+    .proj-card:hover .proj-img img{transform:scale(1.06);filter:brightness(0.85) saturate(1)}
+    .proj-img-overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(to bottom,transparent 40%,var(--card) 100%);
+    }
+    .proj-status{
+      position:absolute;top:1rem;right:1rem;
+      background:rgba(8,10,13,0.75);backdrop-filter:blur(8px);
+      border:1px solid rgba(200,121,65,0.4);
+      border-radius:4px;padding:0.2rem 0.65rem;
+      font-size:0.58rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--copper-lt);
+    }
+    .proj-body{padding:1.6rem 1.8rem 1.8rem}
+    .proj-type{display:inline-flex;align-items:center;gap:6px;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--copper);background:var(--copper-dim);border:1px solid rgba(200,121,65,0.2);border-radius:4px;padding:0.2rem 0.65rem;margin-bottom:1rem}
+    .proj-card h3{font-family:var(--serif);font-size:1.12rem;font-weight:700;color:var(--white);margin-bottom:0.55rem;line-height:1.2}
+    .proj-card p{font-size:0.82rem;color:var(--muted);line-height:1.72;margin-bottom:1.2rem}
+    .proj-states{display:flex;flex-wrap:wrap;gap:6px}
+    .proj-state{font-size:0.67rem;font-weight:600;color:var(--cream);background:var(--lift);border:1px solid var(--rim2);border-radius:4px;padding:0.25rem 0.7rem}
+
+    /* ── PROCESS ── */
+    #process{background:var(--panel);position:relative;overflow:hidden}
+    #process::after{content:'"';position:absolute;right:-3%;top:50%;transform:translateY(-50%);font-family:var(--serif);font-size:clamp(160px,22vw,320px);color:rgba(255,255,255,0.02);pointer-events:none;user-select:none;line-height:1}
+    .pr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.4rem;margin-top:3.5rem;position:relative;z-index:1}
+    .pr-card{background:var(--card);border:1px solid var(--rim);border-radius:var(--r);padding:1.9rem;transition:border-color 0.25s,transform 0.25s,background 0.25s}
+    .pr-card:hover{border-color:rgba(200,121,65,0.3);transform:translateY(-4px);background:var(--lift)}
+    .pr-n{font-family:var(--serif);font-style:italic;font-size:3.2rem;font-weight:800;color:rgba(200,121,65,0.12);line-height:1;margin-bottom:0.8rem}
+    .pr-card h3{font-size:0.9rem;font-weight:700;color:var(--white);margin-bottom:0.5rem;letter-spacing:0.02em}
+    .pr-card p{font-size:0.8rem;color:var(--muted);line-height:1.75}
+
+    /* ── GALLERY ── */
+    #gallery{background:var(--ink)}
+    .gl-mosaic{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:260px 260px;gap:12px}
+    .gl-c{position:relative;border-radius:12px;overflow:hidden;background:var(--card)}
+    .gl-c--t{grid-row:span 2}
+    .gl-c--w{grid-column:span 2}
+    .gl-c img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.55s var(--ease);filter:brightness(0.65) saturate(0.7)}
+    .gl-c:hover img{transform:scale(1.07);filter:brightness(0.85) saturate(1.1)}
+    .gl-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,10,13,0.88) 0%,transparent 50%);display:flex;align-items:flex-end;padding:1.2rem;opacity:0;transition:opacity 0.3s}
+    .gl-c:hover .gl-overlay{opacity:1}
+    .gl-overlay span{font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;background:var(--copper);color:#000;padding:0.22rem 0.7rem;border-radius:3px}
+
+    /* ── CONTACT ── */
+    #contact{background:var(--deep)}
+    .ct-wrap{display:grid;grid-template-columns:1fr 1.7fr;gap:5rem;align-items:start}
+    .ct-l p{font-size:0.96rem;color:var(--text);line-height:1.88;margin-bottom:2rem}
+    .ct-items{display:flex;flex-direction:column;gap:0.85rem}
+    .ct-it{display:flex;align-items:center;gap:0.9rem;padding:1rem 1.2rem;border-radius:10px;background:var(--panel);border:1px solid var(--rim);transition:border-color 0.2s,box-shadow 0.2s}
+    .ct-it:hover{border-color:rgba(200,121,65,0.3);box-shadow:0 0 20px rgba(200,121,65,0.06)}
+    .ct-ic{width:40px;height:40px;border-radius:9px;background:var(--copper);display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0}
+    .ct-tx strong{display:block;font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:1px}
+    .ct-tx span{font-size:0.88rem;font-weight:500;color:var(--cream)}
+
+    .ct-form{background:var(--panel);border:1px solid var(--rim2);border-radius:18px;padding:2.6rem;position:relative;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,0.35)}
+    .ct-form::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--copper),var(--gold),transparent)}
+    .fh{font-family:var(--serif);font-size:1.7rem;font-weight:800;color:var(--white);margin-bottom:0.3rem}
+    .fs{font-size:0.79rem;color:var(--muted);margin-bottom:1.8rem}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .fg{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem}
+    .fg label{font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text);opacity:0.65}
+    .fg input,.fg select,.fg textarea{background:var(--card);border:1px solid var(--rim2);border-radius:8px;padding:0.8rem 1rem;font-family:var(--sans);font-size:0.88rem;color:var(--cream);outline:none;width:100%;transition:border-color 0.2s,box-shadow 0.2s}
+    .fg input::placeholder,.fg textarea::placeholder{color:var(--muted)}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--copper);box-shadow:0 0 0 3px var(--copper-dim)}
+    .fg textarea{resize:vertical;min-height:105px}
+    .fg select option{background:var(--panel)}
+    .fbtn{width:100%;background:var(--copper);color:#000;border:none;padding:1.05rem;border-radius:8px;font-family:var(--sans);font-size:0.82rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:0.3rem;box-shadow:0 0 26px var(--copper-glow);transition:background 0.2s,transform 0.18s,box-shadow 0.2s}
+    .fbtn:hover{background:var(--copper-lt);transform:translateY(-2px);box-shadow:0 0 42px rgba(200,121,65,0.45)}
+    .fok{display:none;text-align:center;padding:3rem 1rem}
+    .fok .oi{font-size:2.5rem;margin-bottom:1rem}
+    .fok h4{font-family:var(--serif);font-size:1.5rem;color:var(--white);margin-bottom:0.5rem}
+    .fok p{font-size:0.88rem;color:var(--muted)}
+
+    /* ── FOOTER ── */
+    footer{background:var(--ink);padding:3.5rem 5% 2.5rem;text-align:center;border-top:1px solid var(--rim)}
+    .fl{font-family:var(--serif);font-size:1.9rem;font-weight:800;color:var(--white);margin-bottom:0.25rem}
+    .fl em{font-style:italic;color:var(--copper-lt)}
+    .fd{font-size:0.68rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:2.5rem}
+    .fn{display:flex;justify-content:center;flex-wrap:wrap;gap:2rem;list-style:none;margin-bottom:2.5rem}
+    .fn a{font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s}
+    .fn a:hover{color:var(--copper-lt)}
+    .fhr{border:none;border-top:1px solid var(--rim);margin-bottom:1.8rem}
+    .fc{font-size:0.68rem;color:rgba(255,255,255,0.15)}
+
+    /* ── REVEAL ── */
+    .rv{opacity:0;transform:translateY(24px);transition:opacity 0.65s ease,transform 0.65s ease}
+    .rv.in{opacity:1;transform:none}
+    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1050px){
+      .ab-wrap{grid-template-columns:1fr}
+      .ab-img-panel{min-height:320px}
+      .proj-grid{grid-template-columns:1fr}
+      .ct-wrap{grid-template-columns:1fr;gap:3rem}
+    }
+    @media(max-width:900px){
+      .hero-stats{flex-wrap:wrap}
+      .hs{min-width:45%}
+    }
+    @media(max-width:700px){
+      section{padding:5rem 5%}
+      .nv{display:none}
+      .bg{display:flex}
+      .hero h1{font-size:2.8rem}
+      .frow{grid-template-columns:1fr}
+      .gl-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+      .gl-c--t{grid-row:span 1}
+      .gl-c{height:170px}
+      .gl-overlay{opacity:1}
+      .sp-hd{flex-direction:column;align-items:flex-start}
+      .ct-form{padding:1.8rem 1.4rem}
+      .proj-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:480px){
+      .gl-mosaic{grid-template-columns:1fr}
+      .gl-c--w{grid-column:span 1}
+      .hero-stats{flex-direction:column}
+      .hs{border-right:none;border-bottom:1px solid var(--rim)}
+      .hs:last-child{border-bottom:none}
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nl">
+      <div class="nl-name">Ted <em>Nite</em></div>
+      <div class="nl-sub">Credentialing Solutions</div>
+    </div>
+    <ul class="nv">
+      <li><a href="#about">About</a></li>
+      <li><a href="#specialties">Specialties</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="mailto:ted.nite@swiftbillingsolutions.com" class="nc">Get in Touch</a></li>
+    </ul>
+    <button class="bg" id="bg" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="mn" id="mn">
+    <a href="#about" onclick="cm()">About</a>
+    <a href="#specialties" onclick="cm()">Specialties</a>
+    <a href="#projects" onclick="cm()">Projects</a>
+    <a href="#process" onclick="cm()">Process</a>
+    <a href="#gallery" onclick="cm()">Gallery</a>
+    <a href="#contact" onclick="cm()">Contact</a>
+    <a href="mailto:ted.nite@swiftbillingsolutions.com" onclick="cm()">Get in Touch</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-img"></div>
+    <div class="hero-veil"></div>
+    <div class="hero-orb"></div>
+    <div class="hero-inner">
+      <div class="h-ey">Healthcare Credentialing &amp; Enrollment</div>
+      <h1>Precision<br/>Credentialing<br/><em>at Scale.</em></h1>
+      <p class="hero-desc">We specialize in end-to-end provider credentialing and payer enrollment — helping healthcare organizations across the United States get providers approved, enrolled, and billing with industry-leading accuracy and speed.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="cta-fill">Start a Project</a>
+        <a href="#specialties" class="cta-line">Our Specialties</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hs"><div class="hs-n">500<sup>+</sup></div><div class="hs-l">Providers Credentialed</div></div>
+        <div class="hs"><div class="hs-n">5<sup>+</sup></div><div class="hs-l">Years Experience</div></div>
+        <div class="hs"><div class="hs-n">98<sup>%</sup></div><div class="hs-l">Approval Rate</div></div>
+        <div class="hs"><div class="hs-n">50<sup>+</sup></div><div class="hs-l">Payer Relationships</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div style="margin-bottom:3rem">
+      <div class="ey rv">About Ted Nite</div>
+      <h2 class="t rv d1">Expert Credentialing<br/><em>Leadership</em></h2>
+    </div>
+    <div class="ab-wrap rv d1">
+      <div class="ab-img-panel">
+        <div class="ab-img-overlay">
+          <div class="ab-badge">
+            <b>5+</b>
+            <span>Years in<br/>Credentialing</span>
+          </div>
+        </div>
+      </div>
+      <div class="ab-text-panel">
+        <p>Ted Nite leads a specialized credentialing practice based in the United States, serving healthcare organizations of all sizes — from solo practitioners to large multi-site health systems and specialty networks.</p>
+        <p>With deep expertise in payer landscapes, documentation requirements, and enrollment timelines, Ted's team delivers accuracy and speed that eliminates revenue delays and keeps practices compliant and growing.</p>
+        <div class="ck-list">
+          <div class="ck"><div class="ck-d">✓</div>Certified Provider Credentialing Specialist (CPCS)</div>
+          <div class="ck"><div class="ck-d">✓</div>CAQH ProView expertise &amp; primary source verification</div>
+          <div class="ck"><div class="ck-d">✓</div>Medicare, Medicaid &amp; commercial payer enrollment</div>
+          <div class="ck"><div class="ck-d">✓</div>NCQA &amp; TJC credentialing standards compliance</div>
+          <div class="ck"><div class="ck-d">✓</div>Rapid turnaround with real-time status tracking</div>
+          <div class="ck"><div class="ck-d">✓</div>Dedicated support from intake through approval</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPECIALTIES -->
+  <section id="specialties">
+    <div class="sp-hd">
+      <div>
+        <div class="ey rv">Provider Types &amp; Specialties</div>
+        <h2 class="t rv d1">Credentialing Across<br/><em>Every Specialty</em></h2>
+      </div>
+      <p class="sb rv d2">Deep experience across clinical disciplines and facility types — no matter the complexity.</p>
+    </div>
+    <div class="sp-grid">
+      <div class="sp-card rv"><span class="sp-ico">🏥</span><h3>Medical Doctors</h3><p>Family medicine, internal medicine, and general practitioners — full panel enrollment with all major commercial and government payers.</p><span class="sp-pill">MD / DO / NP / PA</span></div>
+      <div class="sp-card rv d1"><span class="sp-ico">🧠</span><h3>Mental Health Providers</h3><p>Psychiatrists, psychologists, LCSWs, LPCs, and MFTs — comprehensive behavioral and mental health credentialing.</p><span class="sp-pill">Psychiatry / Counseling</span></div>
+      <div class="sp-card rv d2"><span class="sp-ico">🧘</span><h3>Therapists</h3><p>Physical, occupational, speech-language, and behavioral therapists across all care settings.</p><span class="sp-pill">PT / OT / SLP / ABA</span></div>
+      <div class="sp-card rv"><span class="sp-ico">🦴</span><h3>Chiropractors</h3><p>Chiropractic physicians credentialed with Medicare, Medicaid, and commercial payers including multi-location practices.</p><span class="sp-pill">DC / Chiropractic</span></div>
+      <div class="sp-card rv d1"><span class="sp-ico">🩻</span><h3>Ambulatory Surgery Centers</h3><p>Full ASC facility credentialing, accreditation support, and surgical provider privileging.</p><span class="sp-pill">ASC / Outpatient Surgery</span></div>
+      <div class="sp-card rv d2"><span class="sp-ico">🩼</span><h3>DME Providers</h3><p>DMEPOS suppliers enrolled with Medicare, Medicaid, and commercial plans including accreditation coordination.</p><span class="sp-pill">DME / Orthotics / Prosthetics</span></div>
+      <div class="sp-card rv"><span class="sp-ico">🔬</span><h3>Labs &amp; Diagnostics</h3><p>Clinical laboratory enrollment with CLIA coordination, Medicare Part B billing setup, and payer contracting.</p><span class="sp-pill">Lab / Radiology / Pathology</span></div>
+      <div class="sp-card rv d1"><span class="sp-ico">🏠</span><h3>Home Health Agencies</h3><p>Medicare and Medicaid enrollment for HHAs including CMS survey coordination and accreditation readiness.</p><span class="sp-pill">HHA / Private Duty</span></div>
+      <div class="sp-card rv d2"><span class="sp-ico">🕊️</span><h3>Hospice Providers</h3><p>Hospice enrollment with Medicare and Medicaid, CoP compliance, IDG credentialing, and roster management.</p><span class="sp-pill">Hospice / Palliative Care</span></div>
+      <div class="sp-card rv"><span class="sp-ico">🚑</span><h3>Urgent Care Centers</h3><p>Facility and provider-level credentialing for urgent care clinics — rapid commercial and Medicaid enrollment.</p><span class="sp-pill">Urgent Care / Walk-In</span></div>
+      <div class="sp-card rv d1"><span class="sp-ico">🏢</span><h3>Group Practices &amp; Clinics</h3><p>End-to-end credentialing for multi-provider groups including organizational NPI enrollment and payer negotiations.</p><span class="sp-pill">Groups / MSOs / Systems</span></div>
+      <div class="sp-card rv d2"><span class="sp-ico">🌐</span><h3>Telehealth Providers</h3><p>Interstate compact licensing and multi-state payer credentialing for virtual care platforms.</p><span class="sp-pill">Multi-State / Virtual</span></div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div style="margin-bottom:3rem">
+      <div class="ey rv">Completed Projects</div>
+      <h2 class="t rv d1">Work We're<br/><em>Proud Of</em></h2>
+      <p class="sb rv d2">A selection of completed credentialing engagements across specialties and states — each delivered with precision and on time.</p>
+    </div>
+    <div class="proj-grid">
+
+      <div class="proj-card rv">
+        <div class="proj-img">
+          <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=700&q=80" alt="ASC Credentialing" loading="lazy"/>
+          <div class="proj-img-overlay"></div>
+          <div class="proj-status">✓ Completed</div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-type">🏥 ASC</div>
+          <h3>Ambulatory Surgery Center Credentialing</h3>
+          <p>Full facility credentialing, accreditation readiness, surgical provider enrollment, and commercial payer contracting for ASCs.</p>
+          <div class="proj-states">
+            <span class="proj-state">Arkansas</span>
+            <span class="proj-state">Texas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-card rv d1">
+        <div class="proj-img">
+          <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=700&q=80" alt="DME Credentialing" loading="lazy"/>
+          <div class="proj-img-overlay"></div>
+          <div class="proj-status">✓ Completed</div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-type">🩼 DME</div>
+          <h3>DME Supplier Enrollment &amp; DMEPOS Credentialing</h3>
+          <p>End-to-end DMEPOS supplier enrollment with Medicare, Medicaid, and commercial payers — including DMEPOS accreditation and surety bond support.</p>
+          <div class="proj-states">
+            <span class="proj-state">North Carolina</span>
+            <span class="proj-state">Arkansas</span>
+            <span class="proj-state">Maryland</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="proj-card rv d2">
+        <div class="proj-img">
+          <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=700&q=80" alt="Lab Credentialing" loading="lazy"/>
+          <div class="proj-img-overlay"></div>
+          <div class="proj-status">✓ Completed</div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-type">🔬 Lab</div>
+          <h3>Complete Independent Lab Credentialing</h3>
+          <p>Full independent clinical laboratory credentialing — CLIA coordination, Medicare Part B enrollment, payer contracting, and billing activation.</p>
+          <div class="proj-states">
+            <span class="proj-state">Arkansas</span>
+            <span class="proj-state">Tennessee</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div>
+      <div class="ey rv">Our Process</div>
+      <h2 class="t rv d1">A Proven Methodology<br/><em>Built for Results</em></h2>
+      <p class="sb rv d2">A disciplined six-step process refined over hundreds of successful enrollments — ensuring accuracy at every stage.</p>
+    </div>
+    <div class="pr-grid">
+      <div class="pr-card rv"><div class="pr-n">01</div><h3>Discovery &amp; Assessment</h3><p>We map your organization's goals, credentialing status, payer mix, and deadlines to build a precise engagement plan.</p></div>
+      <div class="pr-card rv d1"><div class="pr-n">02</div><h3>Document Collection</h3><p>All required documentation — licenses, DEA, malpractice, education, and PSV components — gathered via a secure portal.</p></div>
+      <div class="pr-card rv d2"><div class="pr-n">03</div><h3>Application Submission</h3><p>Applications submitted to payers and credentialing bodies with rigorous accuracy — eliminating errors that cause delays.</p></div>
+      <div class="pr-card rv d3"><div class="pr-n">04</div><h3>Active Monitoring</h3><p>Every application tracked in real time with payer follow-up and regular status updates delivered to your team.</p></div>
+      <div class="pr-card rv"><div class="pr-n">05</div><h3>Approval &amp; Activation</h3><p>On approval, we coordinate with your billing team to activate provider numbers and confirm claims-ready status.</p></div>
+      <div class="pr-card rv d1"><div class="pr-n">06</div><h3>Ongoing Maintenance</h3><p>Re-credentialing cycles, CAQH updates, and contract renewals — managed continuously to keep your roster compliant.</p></div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div style="margin-bottom:3rem">
+      <div class="ey rv">Our Work</div>
+      <h2 class="t rv d1">Credentialing <em>In Action</em></h2>
+      <p class="sb rv d2">The documentation, verification, and enrollment work that powers provider approvals nationwide.</p>
+    </div>
+    <div class="gl-mosaic">
+      <div class="gl-c gl-c--t rv"><img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80" alt="Document Verification" loading="lazy"/><div class="gl-overlay"><span>Document Verification</span></div></div>
+      <div class="gl-c rv d1"><img src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=800&q=80" alt="Provider Applications" loading="lazy"/><div class="gl-overlay"><span>Provider Applications</span></div></div>
+      <div class="gl-c rv d2"><img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80" alt="Payer Enrollment" loading="lazy"/><div class="gl-overlay"><span>Payer Enrollment</span></div></div>
+      <div class="gl-c gl-c--w rv d1"><img src="https://images.unsplash.com/photo-1587614382346-4ec70e388b28?w=1200&q=80" alt="Compliance Review" loading="lazy"/><div class="gl-overlay"><span>Compliance Review</span></div></div>
+      <div class="gl-c rv d2"><img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&q=80" alt="Source Verification" loading="lazy"/><div class="gl-overlay"><span>Source Verification</span></div></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="ct-wrap">
+      <div class="ct-l">
+        <div class="ey rv">Get in Touch</div>
+        <h2 class="t rv d1">Ready to<br/><em>Get Started?</em></h2>
+        <p class="rv d2">Reach out to discuss your credentialing needs. Our team responds within one business day with a tailored plan for your organization.</p>
+        <div class="ct-items rv d3">
+          <div class="ct-it"><div class="ct-ic">💼</div><div class="ct-tx"><strong>Business Email</strong><span>ted.nite@swiftbillingsolutions.com</span></div></div>
+          <div class="ct-it"><div class="ct-ic">📧</div><div class="ct-tx"><strong>Personal Email</strong><span>tednite107@gmail.com</span></div></div>
+          <div class="ct-it"><div class="ct-ic">🕐</div><div class="ct-tx"><strong>Response Time</strong><span>Within 1 Business Day</span></div></div>
+          <div class="ct-it"><div class="ct-ic">📍</div><div class="ct-tx"><strong>Location</strong><span>United States — Serving Clients Nationwide</span></div></div>
+        </div>
+      </div>
+      <div class="ct-form rv d1">
+        <div id="fWrap">
+          <div class="fh">Send a Message</div>
+          <div class="fs">Tell us about your credentialing needs — no commitment required.</div>
+          <div class="frow">
+            <div class="fg"><label for="fn">First Name</label><input type="text" id="fn" placeholder="Jane"/></div>
+            <div class="fg"><label for="ln">Last Name</label><input type="text" id="ln" placeholder="Smith"/></div>
+          </div>
+          <div class="fg"><label for="em">Email Address</label><input type="email" id="em" placeholder="jane@yourpractice.com"/></div>
+          <div class="fg"><label for="org">Organization / Practice Name</label><input type="text" id="org" placeholder="Sunshine Medical Group"/></div>
+          <div class="fg">
+            <label for="svc">Service Needed</label>
+            <select id="svc">
+              <option value="">Select a service…</option>
+              <option>Initial Provider Credentialing</option>
+              <option>Medicare / Medicaid Enrollment</option>
+              <option>Hospital Privileging</option>
+              <option>CAQH Profile Setup &amp; Maintenance</option>
+              <option>Re-Credentialing</option>
+              <option>Group Practice Enrollment</option>
+              <option>DME / Lab / Home Health Enrollment</option>
+              <option>Telehealth / Multi-State Credentialing</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="fg"><label for="msg">Project Details</label><textarea id="msg" placeholder="How many providers? Specific payers or deadlines we should know about?"></textarea></div>
+          <button class="fbtn" onclick="sf()">Submit Inquiry →</button>
+        </div>
+        <div class="fok" id="fOk">
+          <div class="oi">✅</div>
+          <h4>Inquiry Received</h4>
+          <p>Thank you for reaching out. Our team will be in touch within one business day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="fl">Ted <em>Nite</em></div>
+    <div class="fd">Credentialing Solutions · United States</div>
+    <ul class="fn">
+      <li><a href="#about">About</a></li>
+      <li><a href="#specialties">Specialties</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <hr class="fhr"/>
+    <p class="fc">© 2025 Ted Nite Credentialing Solutions. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const bg=document.getElementById('bg'),mn=document.getElementById('mn');
+    bg.addEventListener('click',()=>{bg.classList.toggle('o');mn.classList.toggle('o')});
+    function cm(){bg.classList.remove('o');mn.classList.remove('o')}
+    const rvs=document.querySelectorAll('.rv');
+    const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:0.08});
+    rvs.forEach(r=>io.observe(r));
+    function sf(){
+      const n=document.getElementById('fn').value.trim();
+      const e=document.getElementById('em').value.trim();
+      if(!n||!e){alert('Please enter your name and email address.');return}
+      document.getElementById('fWrap').style.display='none';
+      document.getElementById('fOk').style.display='block';
+    }
+  </script>
+</body>
+</html>
